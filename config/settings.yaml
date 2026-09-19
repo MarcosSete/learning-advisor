@@ -1,0 +1,13 @@
+application:
+  name: learning-advisor
+  version: "0.1.0"
+
+advisor:
+  name: LearningAdvisor
+
+recommendation:
+  max_results: 5
+  enable_web_fallback: true
+
+retrieval:
+  embedding_model: all-mpnet-base-v2
