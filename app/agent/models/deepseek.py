@@ -3,7 +3,7 @@ from langchain_deepseek import ChatDeepSeek
 from app.agent.models.base import BaseLLM
 from app.infrastructure.config.settings import get_settings
 
-class DeepSeek(BaseLLM):
+class DeepSeekLLM(BaseLLM):
     """ DeepSeek implementation og the BaseLLM interface"""
 
     def __init__(self,) -> None:
