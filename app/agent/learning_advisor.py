@@ -1,20 +1,41 @@
+from app.agent.models.base import BaseLLM
+from app.agent.schemas import LearningIntent
+
+
 class LearningAdvisor:
-    """
-    Main agent of the Learning Advisor system.
-
-    Responsible for interpreting learning requests
-    and coordinating the recommendation process.
-    """
-
-    from app.agent.models.base import BaseLLM
+    """Interpret learning requests for the Learning Advisor system."""
 
     name = "LearningAdvisor"
 
     def __init__(self, model: BaseLLM) -> None:
         self.model = model
 
-    def run(self, user_input: str) -> str:
+    def interpret(self, user_input: str) -> LearningIntent:
+        """Convert an unstructured learning request into a typed intent."""
         if not user_input.strip():
             raise ValueError("user_input cannot be empty")
 
-        return self.model.invoke(user_input)
+        prompt = f"""
+Analyze the following learning request.
+
+Extract:
+1. The main learning goal.
+2. Any explicit constraints.
+
+Return only valid JSON using this structure:
+
+{{
+    "goal": "string",
+    "constraints": ["string"]
+}}
+
+User request:
+{user_input}
+"""
+
+        response = self.model.invoke(prompt)
+        return LearningIntent.model_validate_json(response)
+
+    def run(self, user_input: str) -> LearningIntent:
+        """Interpret the user's learning request."""
+        return self.interpret(user_input)
