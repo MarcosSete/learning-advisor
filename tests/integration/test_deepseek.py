@@ -1,8 +1,9 @@
 import pytest
 
+from app.agent.learning_advisor import LearningAdvisor
 from app.agent.models.deepseek import DeepSeekLLM
 from app.infrastructure.config.settings import get_settings
-from app.agent.learning_advisor import LearningAdvisor
+
 
 @pytest.mark.integration
 def test_deepseek_connection():
@@ -11,15 +12,12 @@ def test_deepseek_connection():
     if not settings.deepseek_api_key:
         pytest.skip("DEEPSEEK_API_KEY is not configured.")
 
-    deepseek_model = DeepSeekLLM()
-    agent = LearningAdvisor(deepseek_model)
+    advisor = LearningAdvisor(DeepSeekLLM())
 
-    response = agent.run(
-        "Respond only with: DeepSeek integration is working."
+    result = advisor.run(
+        "I want to learn deep learning. "
+        "I already know Python and linear algebra."
     )
 
-
-
-    assert response
-    assert isinstance(response, str)
-    assert len(response.strip()) > 0
+    assert result.goal
+    assert result.constraints
