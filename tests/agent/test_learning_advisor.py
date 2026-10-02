@@ -1,23 +1,37 @@
 import pytest
 
 from app.agent.learning_advisor import LearningAdvisor
-from app.agent.models.deepseek import DeepSeekLLM
+from app.agent.models.base import BaseLLM
 
 
-def test_learning_advisor_accepts_request():
-    model = DeepSeekLLM()
-    advisor = LearningAdvisor(model)
+class FakeLLM(BaseLLM):
+    def invoke(self, prompt: str) -> str:
+        return """
+        {
+            "goal": "learn deep learning",
+            "constraints": [
+                "knows Python",
+                "knows linear algebra"
+            ]
+        }
+        """
+
+
+def test_learning_advisor_interprets_learning_request():
+    advisor = LearningAdvisor(FakeLLM())
 
     result = advisor.run(
-        "Quero aprender Deep Learning."
+        "I want to learn deep learning. "
+        "I already know Python and linear algebra."
     )
 
-    assert result == "Quero aprender Deep Learning."
+    assert result.goal == "learn deep learning"
+    assert "knows Python" in result.constraints
+    assert "knows linear algebra" in result.constraints
 
 
 def test_learning_advisor_rejects_empty_request():
-    model = DeepSeekLLM()
-    advisor = LearningAdvisor(model)
+    advisor = LearningAdvisor(FakeLLM())
 
     with pytest.raises(ValueError):
         advisor.run("")
