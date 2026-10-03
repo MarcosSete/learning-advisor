@@ -2,11 +2,12 @@ import pytest
 
 from app.agent.learning_advisor import LearningAdvisor
 from app.agent.models.deepseek import DeepSeekLLM
+from app.agent.schemas import LearningIntent
 from app.infrastructure.config.settings import get_settings
 
 
 @pytest.mark.integration
-def test_deepseek_connection():
+def test_learning_advisor_with_deepseek():
     settings = get_settings()
 
     if not settings.deepseek_api_key:
@@ -15,9 +16,9 @@ def test_deepseek_connection():
     advisor = LearningAdvisor(DeepSeekLLM())
 
     result = advisor.run(
-        "I want to learn deep learning. "
-        "I already know Python and linear algebra."
+        "Quero aprender Deep Learning. Já conheço Python e álgebra linear."
     )
 
+    assert isinstance(result, LearningIntent)
     assert result.goal
-    assert result.constraints
+    assert isinstance(result.constraints, list)
