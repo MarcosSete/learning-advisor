@@ -9,6 +9,9 @@ version = "0.1.0"
 description = "AI-powered learning resource advisor"
 requires-python = ">=3.13,<3.14"
 
+[project.scripts]
+learning-advisor = "app.main:main"
+
 dependencies = [
     "pydantic>=2.0",
     "pydantic-settings>=2.0",
