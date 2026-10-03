@@ -1,9 +1,10 @@
+from app.agent.decision import LearningDecision
 from app.agent.models.base import BaseLLM
 from app.agent.schemas import LearningIntent
 
 
 class LearningAdvisor:
-    """Interpret learning requests for the Learning Advisor system."""
+    """Interpret learning requests and decide the next action."""
 
     name = "LearningAdvisor"
 
@@ -53,6 +54,25 @@ User request:
         response = self.model.invoke(prompt)
         return LearningIntent.model_validate_json(response)
 
-    def run(self, user_input: str) -> LearningIntent:
-        """Interpret the user's learning request."""
-        return self.interpret(user_input)
+    def decide(self, intent: LearningIntent) -> LearningDecision:
+        """Decide whether the request is ready for recommendation."""
+        missing_information: list[str] = []
+
+        if not intent.goal.strip():
+            missing_information.append("learning goal")
+
+        if not intent.topics:
+            missing_information.append("subject or topic")
+
+        if missing_information:
+            return LearningDecision(
+                action="clarify",
+                missing_information=missing_information,
+            )
+
+        return LearningDecision(action="recommend")
+
+    def run(self, user_input: str) -> LearningDecision:
+        """Interpret the request and decide the next action."""
+        intent = self.interpret(user_input)
+        return self.decide(intent)
