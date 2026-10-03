@@ -18,14 +18,21 @@ class LearningAdvisor:
         prompt = f"""
 Analyze the following learning request.
 
-Extract:
+Extract only information explicitly stated or directly implied by the user:
 1. The main learning goal.
-2. Any explicit constraints.
+2. The user's experience level, when stated.
+3. The user's mathematics background or difficulty, when stated.
+4. Other relevant constraints.
+
+Use null when a field is not supported by the request.
+Do not invent user characteristics.
 
 Return only valid JSON using this structure:
 
 {{
     "goal": "string",
+    "experience_level": "string or null",
+    "mathematics_background": "string or null",
     "constraints": ["string"]
 }}
 
