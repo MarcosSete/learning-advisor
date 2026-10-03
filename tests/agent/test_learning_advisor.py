@@ -53,6 +53,7 @@ def test_learning_advisor_decides_to_recommend():
     )
 
     assert result.action == "recommend"
+    assert result.intent.topics == ["deep learning"]
     assert result.missing_information == []
 
 
@@ -72,6 +73,7 @@ def test_learning_advisor_decides_to_clarify_when_topic_is_missing():
     result = advisor.run("I want to learn something new.")
 
     assert result.action == "clarify"
+    assert result.intent.goal == "learn something new"
     assert "subject or topic" in result.missing_information
 
 
