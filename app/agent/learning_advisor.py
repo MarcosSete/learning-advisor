@@ -20,17 +20,27 @@ Analyze the following learning request.
 
 Extract only information explicitly stated or directly implied by the user:
 1. The main learning goal.
-2. The user's experience level, when stated.
-3. The user's mathematics background or difficulty, when stated.
-4. Other relevant constraints.
+2. The requested subject or topics.
+3. Whether the user prefers a book, course notes, or either.
+4. The user's experience level, when stated.
+5. The user's mathematics background or difficulty, when stated.
+6. Other relevant constraints.
 
-Use null when a field is not supported by the request.
+For resource_type, use exactly one of:
+- "book"
+- "course_notes"
+- "either"
+
+Use an empty list when no specific topic or constraint is stated.
+Use null when a learner attribute is not supported by the request.
 Do not invent user characteristics.
 
 Return only valid JSON using this structure:
 
 {{
     "goal": "string",
+    "topics": ["string"],
+    "resource_type": "book | course_notes | either",
     "experience_level": "string or null",
     "mathematics_background": "string or null",
     "constraints": ["string"]
