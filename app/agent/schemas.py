@@ -29,3 +29,11 @@ class LearningIntent(BaseModel):
         default_factory=list,
         description="Relevant constraints expressed by the user.",
     )
+
+
+class LearningResult(BaseModel):
+    """Result of interpreting a request and deciding the next action."""
+
+    intent: LearningIntent
+    action: Literal["recommend", "clarify"]
+    missing_information: list[str] = Field(default_factory=list)
