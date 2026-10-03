@@ -1,6 +1,6 @@
 from app.agent.decision import LearningDecision
 from app.agent.models.base import BaseLLM
-from app.agent.schemas import LearningIntent
+from app.agent.schemas import LearningIntent, LearningResult
 
 
 class LearningAdvisor:
@@ -72,7 +72,13 @@ User request:
 
         return LearningDecision(action="recommend")
 
-    def run(self, user_input: str) -> LearningDecision:
-        """Interpret the request and decide the next action."""
+    def run(self, user_input: str) -> LearningResult:
+        """Interpret the request and return its intent with the next action."""
         intent = self.interpret(user_input)
-        return self.decide(intent)
+        decision = self.decide(intent)
+
+        return LearningResult(
+            intent=intent,
+            action=decision.action,
+            missing_information=decision.missing_information,
+        )
