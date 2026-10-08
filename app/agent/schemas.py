@@ -1,39 +1,11 @@
-from typing import Literal
+from app.domain.learning import (
+    LearningDecision,
+    LearningIntent,
+    LearningResult,
+)
 
-from pydantic import BaseModel, Field
-
-
-class LearningIntent(BaseModel):
-    """Structured representation of a user's learning request."""
-
-    goal: str = Field(
-        description="What the user wants to learn or achieve."
-    )
-    topics: list[str] = Field(
-        default_factory=list,
-        description="Subjects or topics explicitly requested by the user.",
-    )
-    resource_type: Literal["book", "course_notes", "either"] = Field(
-        default="either",
-        description="Preferred type of learning resource.",
-    )
-    experience_level: str | None = Field(
-        default=None,
-        description="The user's stated experience level with the subject.",
-    )
-    mathematics_background: str | None = Field(
-        default=None,
-        description="The user's stated mathematics background or difficulty.",
-    )
-    constraints: list[str] = Field(
-        default_factory=list,
-        description="Relevant constraints expressed by the user.",
-    )
-
-
-class LearningResult(BaseModel):
-    """Result of interpreting a request and deciding the next action."""
-
-    intent: LearningIntent
-    action: Literal["recommend", "clarify"]
-    missing_information: list[str] = Field(default_factory=list)
+__all__ = [
+    "LearningDecision",
+    "LearningIntent",
+    "LearningResult",
+]
