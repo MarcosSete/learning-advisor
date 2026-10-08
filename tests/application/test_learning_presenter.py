@@ -38,3 +38,16 @@ def test_presenter_asks_for_missing_information():
 
     assert "more information" in message
     assert "subject or topic" in message
+
+
+def test_presenter_handles_empty_missing_information_gracefully():
+    result = LearningAdvisor(FakeLLM()).run(
+        "I want to learn deep learning from a book."
+    )
+    result.action = "clarify"
+    result.missing_information = []
+
+    message = LearningAdvisorPresenter().present(result)
+
+    assert "proceed accurately" in message
+    assert "more detail" in message
