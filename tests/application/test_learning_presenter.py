@@ -27,6 +27,7 @@ def test_presenter_confirms_understood_request():
     assert "Request understood." in message
     assert "deep learning" in message
     assert "recommendation stage" in message
+    assert "have not selected a resource yet" in message
 
 
 def test_presenter_asks_for_missing_information():
