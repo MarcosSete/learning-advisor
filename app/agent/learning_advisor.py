@@ -1,6 +1,5 @@
-from app.agent.decision import LearningDecision
 from app.agent.models.base import BaseLLM
-from app.agent.schemas import LearningIntent, LearningResult
+from app.domain.learning import LearningDecision, LearningIntent, LearningResult
 
 
 class LearningAdvisor:
