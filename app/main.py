@@ -1,6 +1,6 @@
 import argparse
-import json
 
+from app.application.learning_presenter import LearningAdvisorPresenter
 from app.infrastructure.factories import create_learning_advisor_service
 
 
@@ -17,4 +17,4 @@ def main() -> None:
     service = create_learning_advisor_service()
     result = service.analyze_request(args.request)
 
-    print(json.dumps(result.model_dump(), indent=2, ensure_ascii=False))
+    print(LearningAdvisorPresenter().present(result))
