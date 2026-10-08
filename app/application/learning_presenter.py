@@ -2,7 +2,7 @@ from app.domain.learning import LearningResult
 
 
 class LearningAdvisorPresenter:
-    """Format the learning-advisor result for a text-based user experience."""
+    """Format learning-advisor results for a text-based user experience."""
 
     def present(self, result: LearningResult) -> str:
         if result.action == "clarify":
@@ -12,10 +12,16 @@ class LearningAdvisorPresenter:
 
     @staticmethod
     def _clarification_message(result: LearningResult) -> str:
+        if not result.missing_information:
+            return (
+                "I need a bit more information to proceed accurately. "
+                "Please provide more detail about your learning request."
+            )
+
         missing = ", ".join(result.missing_information)
         return (
-            "I can help analyze your learning request, but I need "
-            f"more information about: {missing}."
+            "I need a bit more information to proceed accurately. "
+            f"Please provide: {missing}."
         )
 
     @staticmethod
