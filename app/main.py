@@ -1,9 +1,7 @@
 import argparse
 import json
 
-from app.agent.learning_advisor import LearningAdvisor
-from app.agent.models.deepseek import DeepSeekLLM
-from app.application.learning_service import LearningAdvisorService
+from app.infrastructure.factories import create_learning_advisor_service
 
 
 def main() -> None:
@@ -16,8 +14,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    advisor = LearningAdvisor(DeepSeekLLM())
-    service = LearningAdvisorService(advisor)
+    service = create_learning_advisor_service()
     result = service.analyze_request(args.request)
 
     print(json.dumps(result.model_dump(), indent=2, ensure_ascii=False))
