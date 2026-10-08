@@ -30,5 +30,6 @@ class LearningAdvisorPresenter:
         return (
             f"Request understood. Goal: {result.intent.goal}. "
             f"Topic: {topics}. "
-            "The request is ready for the recommendation stage."
+            "I have analyzed the request, but I have not selected a "
+            "resource yet. The request is ready for the recommendation stage."
         )
