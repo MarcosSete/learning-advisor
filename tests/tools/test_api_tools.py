@@ -115,7 +115,10 @@ def test_search_github_learning_repositories_handles_http_errors(monkeypatch):
 def test_search_github_learning_repositories_rejects_unexpected_payload(
     monkeypatch,
 ):
-    monkeypatch.setattr(api_tools.httpx, "get", lambda *args, **kwargs: FakeResponse({}))
+    def fake_get(*args, **kwargs):
+        return FakeResponse({})
+
+    monkeypatch.setattr(api_tools.httpx, "get", fake_get)
 
     with pytest.raises(RuntimeError, match="unexpected response"):
         api_tools.search_github_learning_repositories.invoke(
