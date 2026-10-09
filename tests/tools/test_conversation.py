@@ -40,8 +40,9 @@ def test_invoke_with_tools_returns_final_response_after_tool_result():
     assert result.content == "Normalized topic: graph machine learning"
     assert len(model.received_messages) == 2
     second_call_messages = model.received_messages[1]
-    assert second_call_messages[-2].tool_call_id == "call_123"
+    assert isinstance(second_call_messages[-2], AIMessage)
     assert isinstance(second_call_messages[-1], ToolMessage)
+    assert second_call_messages[-1].tool_call_id == "call_123"
     assert second_call_messages[-1].content == "graph machine learning"
     assert len(initial_messages) == 1
 
